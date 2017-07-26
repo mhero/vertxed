@@ -1,0 +1,17 @@
+
+rx-rest/\.classpath
+
+rx-rest/\.project
+
+*.prefs
+
+.classpath
+
+.DS_Store
+
+target/
+
+.idea/
+
+my-config.json
+keystore.jceks
