@@ -18,8 +18,8 @@ public class Main {
      */
     public static void main(String[] args) {
         Vertx vertx = Vertx.vertx();
-        MyFirstVerticle m = new MyFirstVerticle();
-        vertx.deployVerticle(m);
+        vertx.deployVerticle(new MyFirstVerticle());
+        vertx.deployVerticle(new MyFirstVerticle());
     }
 
 }
