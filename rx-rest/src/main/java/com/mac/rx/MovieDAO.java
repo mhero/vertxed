@@ -5,7 +5,7 @@
  */
 package com.mac.rx;
 
-import static com.mac.rx.MyFirstVerticle.COLLECTION;
+import static com.mac.rx.RestVerticle.COLLECTION;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
@@ -15,6 +15,7 @@ import io.vertx.ext.mongo.MongoClient;
 import io.vertx.ext.web.RoutingContext;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.apache.http.HttpStatus;
 
 /**
  *
@@ -23,6 +24,8 @@ import java.util.stream.Collectors;
 public class MovieDAO {
 
     private final MongoClient mongo;
+    public final static String CONTENT_TYPE = "content-type";
+    public final static String APPLICATION_JSON = "application/json; charset=utf-8";
 
     public MovieDAO(MongoClient mongo) {
         this.mongo = mongo;
@@ -34,28 +37,28 @@ public class MovieDAO {
 
         mongo.insert(COLLECTION, whisky.toJson(), r
                 -> routingContext.response()
-                        .setStatusCode(201)
-                        .putHeader("content-type", "application/json; charset=utf-8")
+                        .setStatusCode(HttpStatus.SC_CREATED)
+                        .putHeader(CONTENT_TYPE, APPLICATION_JSON)
                         .end(Json.encodePrettily(whisky.setId(r.result()))));
     }
 
     public void getOne(RoutingContext routingContext) {
         final String id = routingContext.request().getParam("id");
         if (id == null) {
-            routingContext.response().setStatusCode(400).end();
+            routingContext.response().setStatusCode(HttpStatus.SC_BAD_REQUEST).end();
         } else {
             mongo.findOne(COLLECTION, new JsonObject().put("_id", id), null, ar -> {
                 if (ar.succeeded()) {
                     if (ar.result() == null) {
-                        routingContext.response().setStatusCode(404).end();
+                        routingContext.response().setStatusCode(HttpStatus.SC_NOT_FOUND).end();
                         return;
                     }
                     Movie whisky = new Movie(ar.result());
                     routingContext.response()
-                            .setStatusCode(200).putHeader("content-type", "application/json; charset=utf-8")
+                            .setStatusCode(HttpStatus.SC_OK).putHeader(CONTENT_TYPE, APPLICATION_JSON)
                             .end(Json.encodePrettily(whisky));
                 } else {
-                    routingContext.response().setStatusCode(404).end();
+                    routingContext.response().setStatusCode(HttpStatus.SC_NOT_FOUND).end();
                 }
             });
         }
@@ -65,7 +68,7 @@ public class MovieDAO {
         final String id = routingContext.request().getParam("id");
         JsonObject json = routingContext.getBodyAsJson();
         if (id == null || json == null) {
-            routingContext.response().setStatusCode(400).end();
+            routingContext.response().setStatusCode(HttpStatus.SC_BAD_REQUEST).end();
         } else {
             mongo.update(COLLECTION,
                     new JsonObject().put("_id", id),
@@ -73,10 +76,10 @@ public class MovieDAO {
                             .put("$set", json),
                     v -> {
                         if (v.failed()) {
-                            routingContext.response().setStatusCode(404).end();
+                            routingContext.response().setStatusCode(HttpStatus.SC_NOT_FOUND).end();
                         } else {
                             routingContext.response()
-                                    .putHeader("content-type", "application/json; charset=utf-8")
+                                    .putHeader(CONTENT_TYPE, APPLICATION_JSON)
                                     .end(Json.encodePrettily(new Movie(id, json.getString("name"), json.getString("rate"))));
                         }
                     });
@@ -86,10 +89,10 @@ public class MovieDAO {
     public void deleteOne(RoutingContext routingContext) {
         String id = routingContext.request().getParam("id");
         if (id == null) {
-            routingContext.response().setStatusCode(400).end();
+            routingContext.response().setStatusCode(HttpStatus.SC_BAD_REQUEST).end();
         } else {
             mongo.removeOne(COLLECTION, new JsonObject().put("_id", id),
-                    ar -> routingContext.response().setStatusCode(204).end());
+                    ar -> routingContext.response().setStatusCode(HttpStatus.SC_NO_CONTENT).end());
         }
     }
 
@@ -98,7 +101,7 @@ public class MovieDAO {
             List<JsonObject> objects = results.result();
             List<Movie> movies = objects.stream().map(Movie::new).collect(Collectors.toList());
             routingContext.response()
-                    .putHeader("content-type", "application/json; charset=utf-8")
+                    .putHeader(CONTENT_TYPE, APPLICATION_JSON)
                     .end(Json.encodePrettily(movies));
         });
     }

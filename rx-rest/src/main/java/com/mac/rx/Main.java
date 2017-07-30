@@ -20,13 +20,13 @@ public class Main {
         Vertx vertx = Vertx.vertx();
 
         if (args.length == 0) {
-            vertx.deployVerticle(new MyFirstVerticle(8080));
+            vertx.deployVerticle(new RestVerticle(8080));
         }
 
         for (String arg : args) {
             try {
                 Integer port = Integer.parseInt(arg);
-                vertx.deployVerticle(new MyFirstVerticle(port));
+                vertx.deployVerticle(new RestVerticle(port));
             } catch (NumberFormatException nfe) {
                 System.out.println("bar pot info:" + arg);
             }

@@ -23,7 +23,13 @@
             <groupId>io.vertx</groupId>
             <artifactId>vertx-mongo-client</artifactId>
             <version>3.2.1</version>
-        </dependency>     
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpcore</artifactId>
+            <version>4.3.3</version>
+            <type>jar</type>
+        </dependency>
     </dependencies>
     
     <properties>

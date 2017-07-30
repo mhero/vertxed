@@ -16,14 +16,14 @@ import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.CorsHandler;
 import io.vertx.ext.web.handler.StaticHandler;
 
-public class MyFirstVerticle extends AbstractVerticle {
+public class RestVerticle extends AbstractVerticle {
 
     public static final String COLLECTION = "movies";
     private MongoClient mongo;
     private MovieDAO movieDao;
     private final Integer port;
 
-    public MyFirstVerticle(Integer port) {
+    public RestVerticle(Integer port) {
         this.port = port;
     }
 
