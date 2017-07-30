@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
  */
 public class MovieDAO {
 
-    private MongoClient mongo;
+    private final MongoClient mongo;
 
     public MovieDAO(MongoClient mongo) {
         this.mongo = mongo;

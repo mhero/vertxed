@@ -21,6 +21,11 @@ public class MyFirstVerticle extends AbstractVerticle {
     public static final String COLLECTION = "movies";
     private MongoClient mongo;
     private MovieDAO movieDao;
+    private final Integer port;
+
+    public MyFirstVerticle(Integer port) {
+        this.port = port;
+    }
 
     @Override
     public void start(Future<Void> fut) {
@@ -74,7 +79,7 @@ public class MyFirstVerticle extends AbstractVerticle {
                 .createHttpServer()
                 .requestHandler(router::accept)
                 .listen(
-                        config().getInteger("http.port", 8080),
+                        config().getInteger("http.port", this.port),
                         next::handle
                 );
     }

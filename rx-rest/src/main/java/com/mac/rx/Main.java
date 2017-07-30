@@ -18,8 +18,19 @@ public class Main {
      */
     public static void main(String[] args) {
         Vertx vertx = Vertx.vertx();
-        vertx.deployVerticle(new MyFirstVerticle());
-        vertx.deployVerticle(new MyFirstVerticle());
+
+        if (args.length == 0) {
+            vertx.deployVerticle(new MyFirstVerticle(8080));
+        }
+
+        for (String arg : args) {
+            try {
+                Integer port = Integer.parseInt(arg);
+                vertx.deployVerticle(new MyFirstVerticle(port));
+            } catch (NumberFormatException nfe) {
+                System.out.println("bar pot info:" + arg);
+            }
+        }
     }
 
 }
