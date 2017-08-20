@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mac.rx;
+package com.mac.rx.movie;
 
 import static com.mac.rx.RestVerticle.COLLECTION;
 import io.vertx.core.AsyncResult;
@@ -32,14 +32,10 @@ public class MovieDAO {
     }
 
     public void addOne(RoutingContext routingContext) {
-        final Movie whisky = Json.decodeValue(routingContext.getBodyAsString(),
-                Movie.class);
+        final Movie whisky = Json.decodeValue(routingContext.getBodyAsString(), Movie.class);
 
-        mongo.insert(COLLECTION, whisky.toJson(), r
-                -> routingContext.response()
-                        .setStatusCode(HttpStatus.SC_CREATED)
-                        .putHeader(CONTENT_TYPE, APPLICATION_JSON)
-                        .end(Json.encodePrettily(whisky.setId(r.result()))));
+        mongo.insert(COLLECTION, whisky.toJson(), r -> routingContext.response().setStatusCode(HttpStatus.SC_CREATED)
+                .putHeader(CONTENT_TYPE, APPLICATION_JSON).end(Json.encodePrettily(whisky.setId(r.result()))));
     }
 
     public void getOne(RoutingContext routingContext) {
@@ -54,8 +50,7 @@ public class MovieDAO {
                         return;
                     }
                     Movie whisky = new Movie(ar.result());
-                    routingContext.response()
-                            .setStatusCode(HttpStatus.SC_OK).putHeader(CONTENT_TYPE, APPLICATION_JSON)
+                    routingContext.response().setStatusCode(HttpStatus.SC_OK).putHeader(CONTENT_TYPE, APPLICATION_JSON)
                             .end(Json.encodePrettily(whisky));
                 } else {
                     routingContext.response().setStatusCode(HttpStatus.SC_NOT_FOUND).end();
@@ -70,19 +65,14 @@ public class MovieDAO {
         if (id == null || json == null) {
             routingContext.response().setStatusCode(HttpStatus.SC_BAD_REQUEST).end();
         } else {
-            mongo.update(COLLECTION,
-                    new JsonObject().put("_id", id),
-                    new JsonObject()
-                            .put("$set", json),
-                    v -> {
-                        if (v.failed()) {
-                            routingContext.response().setStatusCode(HttpStatus.SC_NOT_FOUND).end();
-                        } else {
-                            routingContext.response()
-                                    .putHeader(CONTENT_TYPE, APPLICATION_JSON)
-                                    .end(Json.encodePrettily(new Movie(id, json.getString("name"), json.getString("rate"))));
-                        }
-                    });
+            mongo.update(COLLECTION, new JsonObject().put("_id", id), new JsonObject().put("$set", json), v -> {
+                if (v.failed()) {
+                    routingContext.response().setStatusCode(HttpStatus.SC_NOT_FOUND).end();
+                } else {
+                    routingContext.response().putHeader(CONTENT_TYPE, APPLICATION_JSON)
+                            .end(Json.encodePrettily(new Movie(id, json.getString("name"), json.getString("rate"))));
+                }
+            });
         }
     }
 
@@ -100,9 +90,7 @@ public class MovieDAO {
         mongo.find(COLLECTION, new JsonObject(), results -> {
             List<JsonObject> objects = results.result();
             List<Movie> movies = objects.stream().map(Movie::new).collect(Collectors.toList());
-            routingContext.response()
-                    .putHeader(CONTENT_TYPE, APPLICATION_JSON)
-                    .end(Json.encodePrettily(movies));
+            routingContext.response().putHeader(CONTENT_TYPE, APPLICATION_JSON).end(Json.encodePrettily(movies));
         });
     }
 

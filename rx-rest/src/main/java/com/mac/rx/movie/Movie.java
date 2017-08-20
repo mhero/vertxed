@@ -1,4 +1,4 @@
-package com.mac.rx;
+package com.mac.rx.movie;
 
 import io.vertx.core.json.JsonObject;
 
@@ -33,9 +33,7 @@ public class Movie {
     }
 
     public JsonObject toJson() {
-        JsonObject json = new JsonObject()
-                .put("name", name)
-                .put("rate", rate);
+        JsonObject json = new JsonObject().put("name", name).put("rate", rate);
         if (id != null && !id.isEmpty()) {
             json.put("_id", id);
         }

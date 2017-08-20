@@ -28,7 +28,7 @@ public class Main {
                 Integer port = Integer.parseInt(arg);
                 vertx.deployVerticle(new RestVerticle(port));
             } catch (NumberFormatException nfe) {
-                System.out.println("bar pot info:" + arg);
+                System.out.println("bad pot info:" + arg);
             }
         }
     }

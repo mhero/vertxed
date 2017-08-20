@@ -1,5 +1,6 @@
 package com.mac.rx;
 
+import com.mac.rx.movie.MovieDAO;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,10 +34,7 @@ public class RestVerticle extends AbstractVerticle {
         mongo = MongoClient.createShared(vertx, config());
         movieDao = new MovieDAO(mongo);
 
-        movieDao.createSomeData(
-                (nothing) -> startWebApp(
-                        (http) -> completeStartup(http, fut)
-                ), fut);
+        movieDao.createSomeData((nothing) -> startWebApp((http) -> completeStartup(http, fut)), fut);
     }
 
     private void startWebApp(Handler<AsyncResult<HttpServer>> next) {
@@ -57,31 +55,21 @@ public class RestVerticle extends AbstractVerticle {
 
         router.route("/").handler(routingContext -> {
             HttpServerResponse response = routingContext.response();
-            response
-                    .putHeader("content-type", "text/html")
-                    .end("<h1>Hello Vert.x 3!</h1>");
+            response.putHeader("content-type", "text/html").end("<h1>Hello Vert.x 3!</h1>");
         });
 
         router.route("/assets/*").handler(StaticHandler.create("assets"));
 
         router.route("/api/movies*").handler(BodyHandler.create());
-        router.route("/api/movies*").handler(CorsHandler.create("*")
-                .allowedHeaders(allowHeaders)
-                .allowedMethods(allowMethods));
-
+        router.route("/api/movies*").handler(CorsHandler.create("*").allowedHeaders(allowHeaders).allowedMethods(allowMethods));
         router.get("/api/movies").handler(movieDao::getAll);
         router.post("/api/movies").handler(movieDao::addOne);
         router.get("/api/movies/:id").handler(movieDao::getOne);
         router.put("/api/movies/:id").handler(movieDao::updateOne);
         router.delete("/api/movies/:id").handler(movieDao::deleteOne);
 
-        vertx
-                .createHttpServer()
-                .requestHandler(router::accept)
-                .listen(
-                        config().getInteger("http.port", this.port),
-                        next::handle
-                );
+        vertx.createHttpServer().requestHandler(router::accept).listen(config().getInteger("http.port", this.port),
+                next::handle);
     }
 
     private void completeStartup(AsyncResult<HttpServer> http, Future<Void> fut) {
