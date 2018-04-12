@@ -95,19 +95,18 @@ public class MovieDAO {
     }
 
     public void createSomeData(Handler<AsyncResult<Void>> next, Future<Void> fut) {
-        Movie bowmore = new Movie("The Shawshank Redemption", "9.3");
-        Movie talisker = new Movie("The Godfather", "9.2");
-        System.out.println(bowmore.toJson());
+        Movie shawshank = new Movie("The Shawshank Redemption", "9.3");
+        Movie godfather = new Movie("The Godfather", "9.2");
 
         mongo.count(COLLECTION, new JsonObject(), count -> {
             if (count.succeeded()) {
                 if (count.result() == 0) {
 
-                    mongo.insert(COLLECTION, bowmore.toJson(), ar -> {
+                    mongo.insert(COLLECTION, shawshank.toJson(), ar -> {
                         if (ar.failed()) {
                             fut.fail(ar.cause());
                         } else {
-                            mongo.insert(COLLECTION, talisker.toJson(), ar2 -> {
+                            mongo.insert(COLLECTION, godfather.toJson(), ar2 -> {
                                 if (ar2.failed()) {
                                     fut.failed();
                                 } else {

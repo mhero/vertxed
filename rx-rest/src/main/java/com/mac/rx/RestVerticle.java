@@ -40,18 +40,8 @@ public class RestVerticle extends AbstractVerticle {
     private void startWebApp(Handler<AsyncResult<HttpServer>> next) {
         Router router = Router.router(vertx);
 
-        Set<String> allowHeaders = new HashSet<>();
-        allowHeaders.add("x-requested-with");
-        allowHeaders.add("Access-Control-Allow-Origin");
-        allowHeaders.add("origin");
-        allowHeaders.add("Content-Type");
-        allowHeaders.add("accept");
-        Set<HttpMethod> allowMethods = new HashSet<>();
-        allowMethods.add(HttpMethod.GET);
-        allowMethods.add(HttpMethod.POST);
-        allowMethods.add(HttpMethod.DELETE);
-        allowMethods.add(HttpMethod.PATCH);
-        allowMethods.add(HttpMethod.PUT);
+        Set<String> allowHeaders = getHeaders();
+        Set<HttpMethod> allowMethods = getMethods();
 
         router.route("/").handler(routingContext -> {
             HttpServerResponse response = routingContext.response();
@@ -70,6 +60,26 @@ public class RestVerticle extends AbstractVerticle {
 
         vertx.createHttpServer().requestHandler(router::accept).listen(config().getInteger("http.port", this.port),
                 next::handle);
+    }
+    
+    private Set<String> getHeaders(){
+    	Set<String> allowHeaders = new HashSet<>();
+        allowHeaders.add("x-requested-with");
+        allowHeaders.add("Access-Control-Allow-Origin");
+        allowHeaders.add("origin");
+        allowHeaders.add("Content-Type");
+        allowHeaders.add("accept");
+        return allowHeaders;
+    }
+    
+    private Set<HttpMethod> getMethods(){
+    	Set<HttpMethod> allowMethods = new HashSet<>();
+        allowMethods.add(HttpMethod.GET);
+        allowMethods.add(HttpMethod.POST);
+        allowMethods.add(HttpMethod.DELETE);
+        allowMethods.add(HttpMethod.PATCH);
+        allowMethods.add(HttpMethod.PUT);
+        return allowMethods;
     }
 
     private void completeStartup(AsyncResult<HttpServer> http, Future<Void> fut) {
