@@ -55,7 +55,7 @@
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<io.vertx>3.5.0</io.vertx>
+		<io.vertx>3.5.3</io.vertx>
 		<httpcore>4.4.9</httpcore>
 		<hsqldb>2.3.3</hsqldb>
 		<jackson>2.9.5</jackson>
