@@ -13,24 +13,24 @@ import io.vertx.core.Vertx;
  */
 public class Main {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        Vertx vertx = Vertx.vertx();
+	/**
+	 * @param args the command line arguments
+	 */
+	public static void main(String[] args) {
+		Vertx vertx = Vertx.vertx();
 
-        if (args.length == 0) {
-            vertx.deployVerticle(new RestVerticle(8080));
-        }
+		if (args.length == 0) {
+			vertx.deployVerticle(new RestVerticle(8080));
+		}
 
-        for (String arg : args) {
-            try {
-                Integer port = Integer.parseInt(arg);
-                vertx.deployVerticle(new RestVerticle(port));
-            } catch (NumberFormatException nfe) {
-                System.out.println("bad pot info:" + arg);
-            }
-        }
-    }
+		for (String arg : args) {
+			try {
+				Integer port = Integer.parseInt(arg);
+				vertx.deployVerticle(new RestVerticle(port));
+			} catch (NumberFormatException nfe) {
+				System.out.println("bad pot info:" + arg);
+			}
+		}
+	}
 
 }
