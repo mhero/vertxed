@@ -77,7 +77,7 @@
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<io.vertx>3.7.0</io.vertx>
+		<io.vertx>3.8.0</io.vertx>
 		<httpcore>4.4.11</httpcore>
 		<hsqldb>2.4.1</hsqldb>
 		<jackson.core>2.9.8</jackson.core>
