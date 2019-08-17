@@ -1,13 +1,14 @@
 package com.mac.rx;
 
-import com.mac.rx.movie.MovieDAO;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.mac.rx.movie.MovieDAO;
+
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.AsyncResult;
-import io.vertx.core.Future;
 import io.vertx.core.Handler;
+import io.vertx.core.Promise;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerResponse;
@@ -29,7 +30,7 @@ public class RestVerticle extends AbstractVerticle {
 	}
 
 	@Override
-	public void start(Future<Void> fut) {
+	public void start(Promise<Void> fut) {
 
 		mongo = MongoClient.createShared(vertx, config());
 		movieDao = new MovieDAO(mongo);
@@ -59,7 +60,7 @@ public class RestVerticle extends AbstractVerticle {
 		router.put("/api/movies/:id").handler(movieDao::updateOne);
 		router.delete("/api/movies/:id").handler(movieDao::deleteOne);
 
-		vertx.createHttpServer().requestHandler(router::accept).listen(config().getInteger("http.port", this.port),
+		vertx.createHttpServer().requestHandler(router).listen(config().getInteger("http.port", this.port),
 				next::handle);
 	}
 
@@ -83,7 +84,7 @@ public class RestVerticle extends AbstractVerticle {
 		return allowMethods;
 	}
 
-	private void completeStartup(AsyncResult<HttpServer> http, Future<Void> fut) {
+	private void completeStartup(AsyncResult<HttpServer> http, Promise<Void> fut) {
 		if (http.succeeded()) {
 			fut.complete();
 		} else {

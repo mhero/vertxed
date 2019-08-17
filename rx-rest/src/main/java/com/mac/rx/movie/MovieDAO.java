@@ -9,6 +9,7 @@ import static com.mac.rx.RestVerticle.COLLECTION;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
+import io.vertx.core.Promise;
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.mongo.MongoClient;
@@ -95,7 +96,7 @@ public class MovieDAO {
 		});
 	}
 
-	public void createSomeData(Handler<AsyncResult<Void>> next, Future<Void> fut) {
+	public void createSomeData(Handler<AsyncResult<Void>> next, Promise<Void> fut) {
 		Movie shawshank = new Movie("The Shawshank Redemption", "9.3");
 		Movie godfather = new Movie("The Godfather", "9.2");
 
@@ -109,7 +110,7 @@ public class MovieDAO {
 						} else {
 							mongo.insert(COLLECTION, godfather.toJson(), ar2 -> {
 								if (ar2.failed()) {
-									fut.failed();
+									fut.fail("Failed trying yo create element");
 								} else {
 									next.handle(Future.<Void>succeededFuture());
 								}
