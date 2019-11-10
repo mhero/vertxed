@@ -33,10 +33,10 @@ public class MovieDAO {
 	}
 
 	public void addOne(RoutingContext routingContext) {
-		final Movie whisky = Json.decodeValue(routingContext.getBodyAsString(), Movie.class);
+		final Movie movie = Json.decodeValue(routingContext.getBodyAsString(), Movie.class);
 
-		mongo.insert(COLLECTION, whisky.toJson(), r -> routingContext.response().setStatusCode(HttpStatus.SC_CREATED)
-				.putHeader(CONTENT_TYPE, APPLICATION_JSON).end(Json.encodePrettily(whisky.setId(r.result()))));
+		mongo.insert(COLLECTION, movie.toJson(), r -> routingContext.response().setStatusCode(HttpStatus.SC_CREATED)
+				.putHeader(CONTENT_TYPE, APPLICATION_JSON).end(Json.encodePrettily(movie.setId(r.result()))));
 	}
 
 	public void getOne(RoutingContext routingContext) {
