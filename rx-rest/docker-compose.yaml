@@ -1,0 +1,39 @@
+version: '3'
+services:
+  pe-nginx:
+   container_name: pe-nginx
+   image: nginx:1.13
+   restart: always
+   ports:
+   - 80:80
+   - 443:443
+   volumes:
+   - ./nginx/conf.d:/etc/nginx/conf.d
+   depends_on:
+   - app
+
+  pe-mongodb:
+    container_name: pe-mongodb
+    image: mongo:3.6
+    restart: always
+    environment:
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_LOG_DIR=/dev/null
+    ports:
+      - 12345:27017
+      - 23456:28017
+    command: mongod --smallfiles --logpath=/dev/null # --quiet
+
+  app:
+    build: .
+    working_dir: /app
+    volumes:
+      - .:/app
+      - ~/.m2:/root/.m2
+    expose:
+      - 8080
+    ports:
+      - 8080:8080
+    command: bash -c "mvn clean install &&  java -jar /app/target/rx-rest-1.0-SNAPSHOT-jar-with-dependencies.jar 8080 mongodb://pe-mongodb:27017 vertxd"
+    depends_on:
+      - pe-mongodb

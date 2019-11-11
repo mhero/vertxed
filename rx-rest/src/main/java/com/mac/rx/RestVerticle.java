@@ -12,6 +12,7 @@ import io.vertx.core.Promise;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerResponse;
+import io.vertx.core.json.JsonObject;
 import io.vertx.ext.mongo.MongoClient;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
@@ -24,15 +25,17 @@ public class RestVerticle extends AbstractVerticle {
 	private MongoClient mongo;
 	private MovieDAO movieDao;
 	private final Integer port;
+	private final JsonObject mongoConfig;
 
-	public RestVerticle(Integer port) {
+	public RestVerticle(Integer port, JsonObject mongoConfig) {
 		this.port = port;
+		this.mongoConfig = mongoConfig;
 	}
 
 	@Override
 	public void start(Promise<Void> fut) {
 
-		mongo = MongoClient.createShared(vertx, config());
+		mongo = MongoClient.createShared(vertx, mongoConfig);
 		movieDao = new MovieDAO(mongo);
 
 		movieDao.createSomeData((nothing) -> startWebApp((http) -> completeStartup(http, fut)), fut);

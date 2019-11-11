@@ -6,6 +6,7 @@
 package com.mac.rx;
 
 import io.vertx.core.Vertx;
+import io.vertx.core.json.JsonObject;
 
 /**
  *
@@ -18,19 +19,21 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		Vertx vertx = Vertx.vertx();
+		JsonObject mongoConfig;
+		Integer vertxPort = 8080;
+		String mongoServer = "mongodb://localhost:27017";
+		String mongoDb = "vertxd";
 
-		if (args.length == 0) {
-			vertx.deployVerticle(new RestVerticle(8080));
-		}
+		try {
+			vertxPort = Integer.parseInt(args[0]);
+			mongoServer = String.valueOf(args[1]);
+			mongoDb = String.valueOf(args[2]);
+		} catch (Exception nfe) {
+			System.out.println("bad type/number of args: " + args.length);
 
-		for (String arg : args) {
-			try {
-				Integer port = Integer.parseInt(arg);
-				vertx.deployVerticle(new RestVerticle(port));
-			} catch (NumberFormatException nfe) {
-				System.out.println("bad pot info:" + arg);
-			}
 		}
+		mongoConfig = new JsonObject().put("connection_string", mongoServer).put("db_name", mongoDb);
+		vertx.deployVerticle(new RestVerticle(vertxPort, mongoConfig));
 	}
 
 }

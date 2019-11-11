@@ -2,6 +2,7 @@
 
 small REST api using vertx
 
+
 Endpoints
 
 - GET /api/movies
@@ -9,6 +10,13 @@ Endpoints
 - POST /api/movies
 - DELETE /api/movies/:id
 - PATCH /api/movies/:id
+
+Runable by
+
+```
+docker-compose up
+```
+
 
 GET Request Example
 
