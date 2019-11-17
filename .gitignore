@@ -4,3 +4,9 @@ rx-rest/\.classpath
 rx-rest/\.project
 
 *.prefs
+
+.classpath
+
+.DS_Store
+
+target/
