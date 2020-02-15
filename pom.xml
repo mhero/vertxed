@@ -79,7 +79,7 @@
 		<httpcore>4.4.12</httpcore>
 		<hsqldb>2.5.0</hsqldb>
 		<jackson.core>2.10.0</jackson.core>
-		<netty>4.1.43.Final</netty>
+		<netty>4.1.45.Final</netty>
 	</properties>
 
 
