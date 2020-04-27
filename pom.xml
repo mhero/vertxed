@@ -78,7 +78,7 @@
 		<io.vertx>3.8.5</io.vertx>
 		<httpcore>4.4.13</httpcore>
 		<hsqldb>2.5.0</hsqldb>
-		<jackson.core>2.10.3</jackson.core>
+		<jackson.core>2.11.0</jackson.core>
 		<netty>4.1.48.Final</netty>
 	</properties>
 
