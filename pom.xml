@@ -75,11 +75,11 @@
 	</dependencies>
 
 	<properties>
-		<io.vertx>3.8.3</io.vertx>
-		<httpcore>4.4.12</httpcore>
-		<hsqldb>2.5.0</hsqldb>
-		<jackson.core>2.10.0</jackson.core>
-		<netty>4.1.43.Final</netty>
+		<io.vertx>3.9.4</io.vertx>
+		<httpcore>4.4.13</httpcore>
+		<hsqldb>2.5.1</hsqldb>
+		<netty>4.1.54.Final</netty>
+		<jackson.core>2.11.3</jackson.core>
 	</properties>
 
 
@@ -89,7 +89,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.0</version>
+				<version>3.8.1</version>
 				<configuration>
 					<release>13</release>
 				</configuration>

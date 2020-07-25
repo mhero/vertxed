@@ -5,7 +5,6 @@
  */
 package com.mac.rx.movie;
 
-import static com.mac.rx.RestVerticle.COLLECTION;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
@@ -14,6 +13,9 @@ import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.mongo.MongoClient;
 import io.vertx.ext.web.RoutingContext;
+
+import static com.mac.rx.verticle.RestVerticle.COLLECTION;
+
 import java.util.List;
 import java.util.stream.Collectors;
 import org.apache.http.HttpStatus;
