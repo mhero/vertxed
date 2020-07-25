@@ -55,7 +55,11 @@
 			<artifactId>jackson-core</artifactId>
 			<version>${jackson.core}</version>
 		</dependency>
-
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson-databind}</version>
+		</dependency>
 		<dependency>
 			<groupId>io.netty</groupId>
 			<artifactId>netty-buffer</artifactId>
@@ -75,11 +79,12 @@
 	</dependencies>
 
 	<properties>
-		<io.vertx>3.8.3</io.vertx>
-		<httpcore>4.4.12</httpcore>
-		<hsqldb>2.5.0</hsqldb>
-		<jackson.core>2.10.0</jackson.core>
-		<netty>4.1.43.Final</netty>
+		<io.vertx>4.1.2</io.vertx>
+		<httpcore>4.4.14</httpcore>
+		<hsqldb>2.6.0</hsqldb>
+		<netty>4.1.67.Final</netty>
+		<jackson.core>2.12.4</jackson.core>
+		<jackson-databind>2.12.4</jackson-databind>
 	</properties>
 
 
@@ -89,7 +94,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.0</version>
+				<version>3.8.1</version>
 				<configuration>
 					<release>13</release>
 				</configuration>
