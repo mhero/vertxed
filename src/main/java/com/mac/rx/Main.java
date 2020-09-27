@@ -5,6 +5,8 @@
  */
 package com.mac.rx;
 
+import com.mac.rx.verticle.RestVerticle;
+
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 
