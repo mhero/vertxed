@@ -98,7 +98,7 @@ public class MovieDAO {
 		});
 	}
 
-	public void createSomeData(Handler<AsyncResult<Void>> next, Promise<Void> fut) {
+	public void createFixture(Handler<AsyncResult<Void>> next, Promise<Void> fut) {
 		Movie shawshank = new Movie("The Shawshank Redemption", "9.3");
 		Movie godfather = new Movie("The Godfather", "9.2");
 
