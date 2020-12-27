@@ -55,7 +55,11 @@
 			<artifactId>jackson-core</artifactId>
 			<version>${jackson.core}</version>
 		</dependency>
-
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson-databind}</version>
+		</dependency>
 		<dependency>
 			<groupId>io.netty</groupId>
 			<artifactId>netty-buffer</artifactId>
@@ -80,6 +84,7 @@
 		<hsqldb>2.5.1</hsqldb>
 		<netty>4.1.56.Final</netty>
 		<jackson.core>2.12.0</jackson.core>
+		<jackson-databind>2.12.0</jackson-databind>
 	</properties>
 
 
