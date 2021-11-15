@@ -1,6 +1,7 @@
+
 # vertxed
 
-small REST api using vertx
+small REST api using [vertx](https://vertx.io) tool-​kit
 
 
 Endpoints
