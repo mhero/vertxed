@@ -79,10 +79,10 @@
 	</dependencies>
 
 	<properties>
-		<io.vertx>4.2.1</io.vertx>
-		<httpcore>4.4.14</httpcore>
+		<io.vertx>4.2.2</io.vertx>
+		<httpcore>4.4.15</httpcore>
 		<hsqldb>2.6.1</hsqldb>
-		<netty>4.1.70.Final</netty>
+		<netty>4.1.72.Final</netty>
 		<jackson.core>2.13.0</jackson.core>
 		<jackson-databind>2.13.0</jackson-databind>
 	</properties>
