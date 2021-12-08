@@ -80,7 +80,7 @@
 
 	<properties>
 		<io.vertx>4.2.1</io.vertx>
-		<httpcore>4.4.14</httpcore>
+		<httpcore>4.4.15</httpcore>
 		<hsqldb>2.6.1</hsqldb>
 		<netty>4.1.70.Final</netty>
 		<jackson.core>2.13.0</jackson.core>
