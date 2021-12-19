@@ -1,6 +1,7 @@
 package com.mac.rx.verticle;
 
 import com.mac.rx.movie.MovieDAO;
+import com.mac.rx.movie.MovieFixture;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.AsyncResult;
@@ -29,7 +30,7 @@ public class RestVerticle extends AbstractVerticle {
 		mongo = MongoClient.createShared(vertx, mongoConfig);
 		movieDao = new MovieDAO(mongo);
 
-		movieDao.createFixture((nothing) -> startWebApp((http) -> completeStartup(http, promise)), promise);
+		MovieFixture.createMovie(mongo, (nothing) -> startWebApp((http) -> completeStartup(http, promise)), promise);
 	}
 
 	private void startWebApp(Handler<AsyncResult<HttpServer>> next) {
