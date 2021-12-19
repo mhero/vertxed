@@ -24,6 +24,7 @@ import org.apache.http.HttpStatus;
  *
  * @author marco
  */
+@SuppressWarnings("unused")
 public class MovieDAO {
 
 	private final MongoClient mongo;
@@ -98,34 +99,4 @@ public class MovieDAO {
 		});
 	}
 
-	public void createFixture(Handler<AsyncResult<Void>> next, Promise<Void> fut) {
-		Movie shawshank = new Movie("The Shawshank Redemption", "9.3");
-		Movie godfather = new Movie("The Godfather", "9.2");
-
-		mongo.count(COLLECTION, new JsonObject(), count -> {
-			if (count.succeeded()) {
-				if (count.result() == 0) {
-
-					mongo.insert(COLLECTION, shawshank.toJson(), ar -> {
-						if (ar.failed()) {
-							fut.fail(ar.cause());
-						} else {
-							mongo.insert(COLLECTION, godfather.toJson(), ar2 -> {
-								if (ar2.failed()) {
-									fut.fail("Failed trying yo create element");
-								} else {
-									next.handle(Future.<Void>succeededFuture());
-								}
-							});
-						}
-					});
-				} else {
-					next.handle(Future.<Void>succeededFuture());
-				}
-			} else {
-				// report the error
-				fut.fail(count.cause());
-			}
-		});
-	}
 }
