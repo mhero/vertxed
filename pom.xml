@@ -84,7 +84,7 @@
 		<hsqldb>2.6.1</hsqldb>
 		<netty>4.1.75.Final</netty>
 		<jackson.core>2.13.2</jackson.core>
-		<jackson-databind>2.13.2.1</jackson-databind>
+		<jackson-databind>2.13.2.2</jackson-databind>
 	</properties>
 
 
