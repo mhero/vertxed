@@ -30,7 +30,7 @@ public class RestVerticle extends AbstractVerticle {
 		mongo = MongoClient.createShared(vertx, mongoConfig);
 		movieRepository = new MovieRepository(mongo);
 
-		MovieFixture.createMovie(mongo, (nothing) -> startWebApp((http) -> completeStartup(http, promise)), promise);
+		MovieFixture.createMovie(mongo, nothing -> startWebApp(http -> completeStartup(http, promise)), promise);
 	}
 
 	private void startWebApp(Handler<AsyncResult<HttpServer>> next) {
