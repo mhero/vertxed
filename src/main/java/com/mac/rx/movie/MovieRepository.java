@@ -53,9 +53,9 @@ public class MovieRepository {
 						routingContext.response().setStatusCode(HttpStatus.SC_NOT_FOUND).end();
 						return;
 					}
-					Movie whisky = new Movie(ar.result());
+					Movie movie = new Movie(ar.result());
 					routingContext.response().setStatusCode(HttpStatus.SC_OK).putHeader(CONTENT_TYPE, APPLICATION_JSON)
-							.end(Json.encodePrettily(whisky));
+							.end(Json.encodePrettily(movie));
 				} else {
 					routingContext.response().setStatusCode(HttpStatus.SC_NOT_FOUND).end();
 				}
