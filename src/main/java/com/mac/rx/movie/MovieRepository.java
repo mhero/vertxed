@@ -43,7 +43,7 @@ public class MovieRepository {
 	}
 
 	public void getOne(RoutingContext routingContext) {
-		final String id = routingContext.request().getParam("id");
+		final String id = getId(routingContext);
 		if (id == null) {
 			routingContext.response().setStatusCode(HttpStatus.SC_BAD_REQUEST).end();
 		} else {
@@ -64,7 +64,7 @@ public class MovieRepository {
 	}
 
 	public void updateOne(RoutingContext routingContext) {
-		final String id = routingContext.request().getParam("id");
+		final String id = getId(routingContext);
 		JsonObject json = routingContext.getBodyAsJson();
 		if (id == null || json == null) {
 			routingContext.response().setStatusCode(HttpStatus.SC_BAD_REQUEST).end();
@@ -82,7 +82,7 @@ public class MovieRepository {
 	}
 
 	public void deleteOne(RoutingContext routingContext) {
-		String id = routingContext.request().getParam("id");
+		final String id = getId(routingContext);
 		if (id == null) {
 			routingContext.response().setStatusCode(HttpStatus.SC_BAD_REQUEST).end();
 		} else {
@@ -97,6 +97,10 @@ public class MovieRepository {
 			List<Movie> movies = objects.stream().map(Movie::new).collect(Collectors.toList());
 			routingContext.response().putHeader(CONTENT_TYPE, APPLICATION_JSON).end(Json.encodePrettily(movies));
 		});
+	}
+
+	private String getId(RoutingContext routingContext) {
+		return routingContext.request().getParam("id");
 	}
 
 }
