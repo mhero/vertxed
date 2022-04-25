@@ -25,13 +25,13 @@ import org.apache.http.HttpStatus;
  * @author marco
  */
 @SuppressWarnings("unused")
-public class MovieDAO {
+public class MovieRepository {
 
 	private final MongoClient mongo;
 	public final static String CONTENT_TYPE = "content-type";
 	public final static String APPLICATION_JSON = "application/json; charset=utf-8";
 
-	public MovieDAO(MongoClient mongo) {
+	public MovieRepository(MongoClient mongo) {
 		this.mongo = mongo;
 	}
 

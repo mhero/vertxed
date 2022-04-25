@@ -1,6 +1,6 @@
 package com.mac.rx.verticle;
 
-import com.mac.rx.movie.MovieDAO;
+import com.mac.rx.movie.MovieRepository;
 import com.mac.rx.movie.MovieFixture;
 
 import io.vertx.core.AbstractVerticle;
@@ -15,7 +15,7 @@ public class RestVerticle extends AbstractVerticle {
 
 	public static final String COLLECTION = "movies";
 	private MongoClient mongo;
-	private MovieDAO movieDao;
+	private MovieRepository movieRepository;
 	private final Integer port;
 	private final JsonObject mongoConfig;
 
@@ -28,7 +28,7 @@ public class RestVerticle extends AbstractVerticle {
 	public void start(Promise<Void> promise) {
 
 		mongo = MongoClient.createShared(vertx, mongoConfig);
-		movieDao = new MovieDAO(mongo);
+		movieRepository = new MovieRepository(mongo);
 
 		MovieFixture.createMovie(mongo, (nothing) -> startWebApp((http) -> completeStartup(http, promise)), promise);
 	}
@@ -36,7 +36,7 @@ public class RestVerticle extends AbstractVerticle {
 	private void startWebApp(Handler<AsyncResult<HttpServer>> next) {
 
 		Routes routes = new Routes();
-		vertx.createHttpServer().requestHandler(routes.createRoutes(vertx, movieDao))
+		vertx.createHttpServer().requestHandler(routes.createRoutes(vertx, movieRepository))
 				.listen(config().getInteger("http.port", this.port), next::handle);
 	}
 
