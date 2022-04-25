@@ -1,1 +1,1 @@
-FROM maven:3.6.2-jdk-13
+FROM maven:3.8.5-eclipse-temurin-16
