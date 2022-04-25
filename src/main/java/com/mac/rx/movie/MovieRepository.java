@@ -28,8 +28,8 @@ import org.apache.http.HttpStatus;
 public class MovieRepository {
 
 	private final MongoClient mongo;
-	public final static String CONTENT_TYPE = "content-type";
-	public final static String APPLICATION_JSON = "application/json; charset=utf-8";
+	public static final String CONTENT_TYPE = "content-type";
+	public static final String APPLICATION_JSON = "application/json; charset=utf-8";
 
 	public MovieRepository(MongoClient mongo) {
 		this.mongo = mongo;
