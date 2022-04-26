@@ -9,13 +9,23 @@ Endpoints
 - GET /api/movies
 - GET /api/movies/:id
 - POST /api/movies
+- PUT /api/movies/:id
 - DELETE /api/movies/:id
-- PATCH /api/movies/:id
 
 Runable by
 
 ```
 docker-compose up
+```
+
+Example requests
+
+```
+curl --request GET http://localhost:8080/api/movies
+curl --request GET http://localhost:8080/api/movies/62685f05f2d10162d7135ced
+curl --request POST --data '{"name":"xyz","rate":"7.1"}' http://localhost:8080/api/movies
+curl --request PUT  --data '{"name":"wxyz","rate":"7.2"}' http://localhost:8080/api/movies/62685f05f2d10162d7135ced
+curl --request DELETE http://localhost:8080/api/movies/62685f05f2d10162d7135ced
 ```
 
 
