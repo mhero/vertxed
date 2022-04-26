@@ -13,7 +13,6 @@ import io.vertx.ext.mongo.MongoClient;
 
 public class RestVerticle extends AbstractVerticle {
 
-	public static final String COLLECTION = "movies";
 	private MongoClient mongo;
 	private MovieRepository movieRepository;
 	private final Integer port;

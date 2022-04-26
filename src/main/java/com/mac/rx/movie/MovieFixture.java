@@ -1,6 +1,6 @@
 package com.mac.rx.movie;
 
-import static com.mac.rx.verticle.RestVerticle.COLLECTION;
+import static com.mac.rx.movie.MovieRepository.COLLECTION;
 
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;

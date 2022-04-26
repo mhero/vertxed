@@ -14,22 +14,20 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.ext.mongo.MongoClient;
 import io.vertx.ext.web.RoutingContext;
 
-import static com.mac.rx.verticle.RestVerticle.COLLECTION;
-
 import java.util.List;
 import java.util.stream.Collectors;
 import org.apache.http.HttpStatus;
+
+import com.mac.rx.mongo.DatabaseClient;
 
 /**
  *
  * @author marco
  */
 @SuppressWarnings("unused")
-public class MovieRepository {
+public class MovieRepository extends DatabaseClient {
 
-	private final MongoClient mongo;
-	public static final String CONTENT_TYPE = "content-type";
-	public static final String APPLICATION_JSON = "application/json; charset=utf-8";
+	public static final String COLLECTION = "movies";
 
 	public MovieRepository(MongoClient mongo) {
 		this.mongo = mongo;
@@ -38,69 +36,70 @@ public class MovieRepository {
 	public void addOne(RoutingContext routingContext) {
 		final Movie movie = Json.decodeValue(routingContext.getBodyAsString(), Movie.class);
 
-		mongo.insert(COLLECTION, movie.toJson(), r -> routingContext.response().setStatusCode(HttpStatus.SC_CREATED)
-				.putHeader(CONTENT_TYPE, APPLICATION_JSON).end(Json.encodePrettily(movie.setId(r.result()))));
+		mongo.insert(COLLECTION, movie.toJson(), results -> {
+			if (results.succeeded()) {
+				movie.setId(results.result());
+				succesful(routingContext, movie);
+			}
+		});
 	}
 
 	public void getOne(RoutingContext routingContext) {
 		final String id = getId(routingContext);
 		if (id == null) {
-			routingContext.response().setStatusCode(HttpStatus.SC_BAD_REQUEST).end();
-		} else {
-			mongo.findOne(COLLECTION, new JsonObject().put("_id", id), null, ar -> {
-				if (ar.succeeded()) {
-					if (ar.result() == null) {
-						routingContext.response().setStatusCode(HttpStatus.SC_NOT_FOUND).end();
-						return;
-					}
-					Movie movie = new Movie(ar.result());
-					routingContext.response().setStatusCode(HttpStatus.SC_OK).putHeader(CONTENT_TYPE, APPLICATION_JSON)
-							.end(Json.encodePrettily(movie));
-				} else {
-					routingContext.response().setStatusCode(HttpStatus.SC_NOT_FOUND).end();
-				}
-			});
+			badRequest(routingContext);
+			return;
 		}
+
+		mongo.findOne(COLLECTION, findById(id), null, results -> {
+			if (results.failed() || results.result() == null) {
+				notFound(routingContext);
+				return;
+			}
+			Movie movie = new Movie(results.result());
+			succesful(routingContext, movie);
+
+		});
+
 	}
 
 	public void updateOne(RoutingContext routingContext) {
 		final String id = getId(routingContext);
-		JsonObject json = routingContext.getBodyAsJson();
+		final JsonObject json = routingContext.getBodyAsJson();
+	
 		if (id == null || json == null) {
-			routingContext.response().setStatusCode(HttpStatus.SC_BAD_REQUEST).end();
-		} else {
-			mongo.updateCollection(COLLECTION, new JsonObject().put("_id", id), new JsonObject().put("$set", json),
-					v -> {
-						if (v.failed()) {
-							routingContext.response().setStatusCode(HttpStatus.SC_NOT_FOUND).end();
-						} else {
-							routingContext.response().putHeader(CONTENT_TYPE, APPLICATION_JSON).end(
-									Json.encodePrettily(new Movie(id, json.getString("name"), json.getString("rate"))));
-						}
-					});
+			badRequest(routingContext);
+			return;
 		}
+		
+		Movie movie = new Movie(id, json.getString("name"), json.getString("rate"));
+
+		mongo.updateCollection(COLLECTION, findById(id), new JsonObject().put("$set", json), results -> {
+			if (results.failed()) {
+				notFound(routingContext);
+				return;
+			}
+			succesful(routingContext, movie);
+
+		});
+
 	}
 
 	public void deleteOne(RoutingContext routingContext) {
 		final String id = getId(routingContext);
 		if (id == null) {
-			routingContext.response().setStatusCode(HttpStatus.SC_BAD_REQUEST).end();
-		} else {
-			mongo.removeDocument(COLLECTION, new JsonObject().put("_id", id),
-					ar -> routingContext.response().setStatusCode(HttpStatus.SC_NO_CONTENT).end());
+			badRequest(routingContext);
+			return;
 		}
+		mongo.removeDocument(COLLECTION, findById(id),
+				results -> routingContext.response().setStatusCode(HttpStatus.SC_NO_CONTENT).end());
 	}
 
 	public void getAll(RoutingContext routingContext) {
 		mongo.find(COLLECTION, new JsonObject(), results -> {
-			List<JsonObject> objects = results.result();
-			List<Movie> movies = objects.stream().map(Movie::new).collect(Collectors.toList());
-			routingContext.response().putHeader(CONTENT_TYPE, APPLICATION_JSON).end(Json.encodePrettily(movies));
+			List<Movie> movies = results.result().stream().map(Movie::new).collect(Collectors.toList());
+			succesful(routingContext, movies);
 		});
-	}
-
-	private String getId(RoutingContext routingContext) {
-		return routingContext.request().getParam("id");
 	}
 
 }

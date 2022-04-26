@@ -52,18 +52,15 @@ public class Movie {
 		return id;
 	}
 
-	public Movie setName(String name) {
+	public void setName(String name) {
 		this.name = name;
-		return this;
 	}
 
-	public Movie setOrigin(String rate) {
+	public void setOrigin(String rate) {
 		this.rate = rate;
-		return this;
 	}
 
-	public Movie setId(String id) {
+	public void setId(String id) {
 		this.id = id;
-		return this;
 	}
 }
