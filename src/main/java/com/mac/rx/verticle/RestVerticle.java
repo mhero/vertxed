@@ -10,7 +10,9 @@ import io.vertx.core.Handler;
 import io.vertx.core.Promise;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.json.JsonObject;
+import io.vertx.ext.auth.jwt.JWTAuth;
 import io.vertx.ext.mongo.MongoClient;
+import io.vertx.ext.web.Router;
 
 public class RestVerticle extends AbstractVerticle {
 
@@ -37,8 +39,11 @@ public class RestVerticle extends AbstractVerticle {
 
 	private void startWebApp(Handler<AsyncResult<HttpServer>> next) {
 
-		Routes routes = new Routes(configRetriever);
-		vertx.createHttpServer().requestHandler(routes.createRoutes(vertx, movieRepository))
+		Router router = Router.router(vertx);
+		JWTAuth authProvider = new JwtProvider().createJwtProvider(vertx);
+
+		Routes routes = new Routes(router, authProvider, configRetriever);
+		vertx.createHttpServer().requestHandler(routes.createRoutes(movieRepository))
 				.listen(config().getInteger("http.port", this.port), next::handle);
 	}
 

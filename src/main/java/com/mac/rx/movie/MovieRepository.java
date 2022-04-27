@@ -66,12 +66,12 @@ public class MovieRepository extends DatabaseClient {
 	public void updateOne(RoutingContext routingContext) {
 		final String id = getId(routingContext);
 		final JsonObject json = routingContext.getBodyAsJson();
-	
+
 		if (id == null || json == null) {
 			badRequest(routingContext);
 			return;
 		}
-		
+
 		Movie movie = new Movie(id, json.getString("name"), json.getString("rate"));
 
 		mongo.updateCollection(COLLECTION, findById(id), new JsonObject().put("$set", json), results -> {

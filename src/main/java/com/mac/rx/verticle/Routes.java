@@ -5,7 +5,6 @@ import org.apache.http.HttpStatus;
 import com.mac.rx.movie.MovieRepository;
 
 import io.vertx.config.ConfigRetriever;
-import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.auth.jwt.JWTAuth;
@@ -23,17 +22,19 @@ public class Routes {
 	private final ConfigRetriever configRetriever;
 	private static final String USER = "username";
 	private static final String PASSWORD = "password";
+	private Router router;
+	private JWTAuth authProvider;
 
-	public Routes(ConfigRetriever configRetriever) {
+	public Routes(Router router, JWTAuth authProvider, ConfigRetriever configRetriever) {
 		this.configRetriever = configRetriever;
+		this.router = router;
+		this.authProvider = authProvider;
 	}
 
-	public Router createRoutes(Vertx vertx, MovieRepository movieRepository) {
-		Router router = Router.router(vertx);
+	public Router createRoutes(MovieRepository movieRepository) {
 
 		router.route().handler(BodyHandler.create());
 
-		JWTAuth authProvider = new JwtProvider().createJwtProvider(vertx);
 		routeLogin(router, authProvider);
 
 		router.route("/protected/*").handler(JWTAuthHandler.create(authProvider));
@@ -58,17 +59,13 @@ public class Routes {
 	private void routeLogin(Router router, JWTAuth authProvider) {
 
 		router.route("/login").handler(routingContext -> {
-
-			final JsonObject jsonBody = routingContext.getBodyAsJson();
-
 			// this is an example, authentication should be done with another provider...
 			this.configRetriever.getConfig(json -> {
-				JsonObject result = json.result();
+				JsonObject configFile = json.result();
 
-				if (result.getString(USER).equals(jsonBody.getString(USER))
-						&& result.getString(PASSWORD).equals(jsonBody.getString(PASSWORD))) {
+				if (validateAuth(configFile, routingContext.getBodyAsJson())) {
 					routingContext.response()
-							.end(authProvider.generateToken(new JsonObject().put("sub", result.getString(USER))));
+							.end(authProvider.generateToken(new JsonObject().put("sub", configFile.getString(USER))));
 				} else {
 					routingContext.fail(HttpStatus.SC_UNAUTHORIZED);
 				}
@@ -76,6 +73,11 @@ public class Routes {
 
 		});
 
+	}
+
+	private boolean validateAuth(JsonObject configFile, JsonObject requestBody) {
+		return configFile.getString(USER).equals(requestBody.getString(USER))
+				&& configFile.getString(PASSWORD).equals(requestBody.getString(PASSWORD));
 	}
 
 }

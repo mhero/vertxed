@@ -7,7 +7,7 @@ import io.vertx.core.http.HttpMethod;
 
 public class HttpMethods {
 	static final Set<HttpMethod> allowedMethods = new HashSet<>();
-	
+
 	static {
 		allowedMethods.add(HttpMethod.GET);
 		allowedMethods.add(HttpMethod.POST);
