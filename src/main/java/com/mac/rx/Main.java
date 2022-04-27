@@ -7,6 +7,7 @@ package com.mac.rx;
 
 import com.mac.rx.verticle.RestVerticle;
 
+import io.vertx.config.ConfigRetriever;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 
@@ -21,7 +22,8 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		Vertx vertx = Vertx.vertx();
-		JsonObject mongoConfig;
+	
+
 		Integer vertxPort = 8080;
 		String mongoServer = "mongodb://localhost:27017";
 		String mongoDb = "vertxd";
@@ -39,9 +41,10 @@ public class Main {
 
 			}
 		}
-
-		mongoConfig = new JsonObject().put("connection_string", mongoServer).put("db_name", mongoDb);
-		vertx.deployVerticle(new RestVerticle(vertxPort, mongoConfig));
+		
+		ConfigRetriever configRetriever = new Config().getConfigFile(vertx);
+		JsonObject mongoConfig = new JsonObject().put("connection_string", mongoServer).put("db_name", mongoDb);
+		vertx.deployVerticle(new RestVerticle(vertxPort, mongoConfig, configRetriever));
 	}
 
 }

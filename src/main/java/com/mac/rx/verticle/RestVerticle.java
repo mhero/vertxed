@@ -3,6 +3,7 @@ package com.mac.rx.verticle;
 import com.mac.rx.movie.MovieRepository;
 import com.mac.rx.movie.MovieFixture;
 
+import io.vertx.config.ConfigRetriever;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
@@ -17,10 +18,12 @@ public class RestVerticle extends AbstractVerticle {
 	private MovieRepository movieRepository;
 	private final Integer port;
 	private final JsonObject mongoConfig;
+	private final ConfigRetriever configRetriever;
 
-	public RestVerticle(Integer port, JsonObject mongoConfig) {
+	public RestVerticle(Integer port, JsonObject mongoConfig, ConfigRetriever configRetriever) {
 		this.port = port;
 		this.mongoConfig = mongoConfig;
+		this.configRetriever = configRetriever;
 	}
 
 	@Override
@@ -34,7 +37,7 @@ public class RestVerticle extends AbstractVerticle {
 
 	private void startWebApp(Handler<AsyncResult<HttpServer>> next) {
 
-		Routes routes = new Routes();
+		Routes routes = new Routes(configRetriever);
 		vertx.createHttpServer().requestHandler(routes.createRoutes(vertx, movieRepository))
 				.listen(config().getInteger("http.port", this.port), next::handle);
 	}

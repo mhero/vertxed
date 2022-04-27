@@ -4,6 +4,7 @@ import org.apache.http.HttpStatus;
 
 import com.mac.rx.movie.MovieRepository;
 
+import io.vertx.config.ConfigRetriever;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.json.JsonObject;
@@ -19,6 +20,13 @@ public class Routes {
 	private static final String ALL_MOVIES_ENDPOINTS = "/protected/api/movies*";
 	private static final String MOVIES_ENDPOINT = "/protected/api/movies";
 	private static final String MOVIES_ENDPOINT_WITH_ID = "/protected/api/movies/:id";
+	private final ConfigRetriever configRetriever;
+	private static final String USER = "username";
+	private static final String PASSWORD = "password";
+
+	public Routes(ConfigRetriever configRetriever) {
+		this.configRetriever = configRetriever;
+	}
 
 	public Router createRoutes(Vertx vertx, MovieRepository movieRepository) {
 		Router router = Router.router(vertx);
@@ -50,14 +58,22 @@ public class Routes {
 	private void routeLogin(Router router, JWTAuth authProvider) {
 
 		router.route("/login").handler(routingContext -> {
+
 			final JsonObject jsonBody = routingContext.getBodyAsJson();
 
 			// this is an example, authentication should be done with another provider...
-			if ("marco".equals(jsonBody.getString("username")) && "secret".equals(jsonBody.getString("password"))) {
-				routingContext.response().end(authProvider.generateToken(new JsonObject().put("sub", "marco")));
-			} else {
-				routingContext.fail(HttpStatus.SC_UNAUTHORIZED);
-			}
+			this.configRetriever.getConfig(json -> {
+				JsonObject result = json.result();
+
+				if (result.getString(USER).equals(jsonBody.getString(USER))
+						&& result.getString(PASSWORD).equals(jsonBody.getString(PASSWORD))) {
+					routingContext.response()
+							.end(authProvider.generateToken(new JsonObject().put("sub", result.getString(USER))));
+				} else {
+					routingContext.fail(HttpStatus.SC_UNAUTHORIZED);
+				}
+			});
+
 		});
 
 	}
