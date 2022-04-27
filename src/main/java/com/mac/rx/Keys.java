@@ -8,6 +8,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 
 public class Keys {
+	// Read more at https://www.baeldung.com/java-keystore
 	public Keys() {
 		try {
 			KeyStore ks = KeyStore.getInstance("jceks");
