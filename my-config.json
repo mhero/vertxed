@@ -1,5 +1,5 @@
 {
-	"mongoServer": "mongodb://localhost:27017",
+	"connectionString": "mongodb://localhost:27017",
 	"vertxPort": 8080,
 	"mongoDb": "vertxd",
 	"username": "marco",

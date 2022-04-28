@@ -5,6 +5,8 @@
  */
 package com.mac.rx;
 
+import com.mac.rx.config.AppConfig;
+import com.mac.rx.config.MongoConfig;
 import com.mac.rx.verticle.RestVerticle;
 
 import io.vertx.config.ConfigRetriever;
@@ -22,10 +24,9 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		Vertx vertx = Vertx.vertx();
-	
 
 		Integer vertxPort = 8080;
-		String mongoServer = "mongodb://localhost:27017";
+		String connectionString = "mongodb://localhost:27017";
 		String mongoDb = "vertxd";
 
 		if (args == null || args.length == 0) {
@@ -34,16 +35,16 @@ public class Main {
 		} else {
 			try {
 				vertxPort = Integer.parseInt(args[0]);
-				mongoServer = String.valueOf(args[1]);
+				connectionString = String.valueOf(args[1]);
 				mongoDb = String.valueOf(args[2]);
 			} catch (Exception nfe) {
 				System.out.println("bad type/number of args: " + args.length);
 
 			}
 		}
-		
-		ConfigRetriever configRetriever = new Config().getConfigFile(vertx);
-		JsonObject mongoConfig = new JsonObject().put("connection_string", mongoServer).put("db_name", mongoDb);
+
+		ConfigRetriever configRetriever = new AppConfig().getConfigFile(vertx);
+		JsonObject mongoConfig = new MongoConfig(connectionString, mongoDb).config();
 		vertx.deployVerticle(new RestVerticle(vertxPort, mongoConfig, configRetriever));
 	}
 
