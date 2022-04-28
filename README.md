@@ -23,10 +23,10 @@ Example requests
 ```
 token=$(curl --request POST --data '{"username":"marco","password":"secret"}' http://localhost:8080/login)
 curl --request GET  -H "Authorization: Bearer $token" http://localhost:8080/protected/api/movies
-curl --request GET  -H "Authorization: Bearer $token" http://localhost:8080/api/movies/62685f05f2d10162d7135ced
-curl --request POST -H "Authorization: Bearer $token"  --data '{"name":"xyz","rate":"7.1"}' http://localhost:8080/api/movies
-curl --request PUT  -H "Authorization: Bearer $token"  --data '{"name":"wxyz","rate":"7.2"}' http://localhost:8080/api/movies/62685f05f2d10162d7135ced
-curl --request DELETE -H "Authorization: Bearer $token" http://localhost:8080/api/movies/62685f05f2d10162d7135ced
+curl --request GET  -H "Authorization: Bearer $token" http://localhost:8080/protected/api/movies/626b0ab4bcee077d94958c59
+curl --request POST -H "Authorization: Bearer $token"  --data '{"name":"xyz","rate":"7.1"}' http://localhost:8080/protected/api/movies
+curl --request PUT  -H "Authorization: Bearer $token"  --data '{"name":"wxyz","rate":"7.2"}' http://localhost:8080/protected/api/movies/626b0ab4bcee077d94958c59
+curl --request DELETE -H "Authorization: Bearer $token" http://localhost:8080/protected/api/movies/626b0ab4bcee077d94958c59
 ```
 
 GET Request Example
