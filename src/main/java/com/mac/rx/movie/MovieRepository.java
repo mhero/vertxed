@@ -18,19 +18,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.apache.http.HttpStatus;
 
-import com.mac.rx.mongo.DatabaseClient;
-
 /**
  *
  * @author marco
  */
 @SuppressWarnings("unused")
-public class MovieRepository extends DatabaseClient {
+public class MovieRepository {
 
 	public static final String COLLECTION = "movies";
+	private MongoClient mongo;
+	private Response response;
 
 	public MovieRepository(MongoClient mongo) {
 		this.mongo = mongo;
+		this.response = new Response();
 	}
 
 	public void addOne(RoutingContext routingContext) {
@@ -39,7 +40,7 @@ public class MovieRepository extends DatabaseClient {
 		mongo.insert(COLLECTION, movie.toJson(), results -> {
 			if (results.succeeded()) {
 				movie.setId(results.result());
-				succesful(routingContext, movie);
+				response.succesful(routingContext, movie);
 			}
 		});
 	}
@@ -47,17 +48,17 @@ public class MovieRepository extends DatabaseClient {
 	public void getOne(RoutingContext routingContext) {
 		final String id = getId(routingContext);
 		if (id == null) {
-			badRequest(routingContext);
+			response.badRequest(routingContext);
 			return;
 		}
 
 		mongo.findOne(COLLECTION, findById(id), null, results -> {
 			if (results.failed() || results.result() == null) {
-				notFound(routingContext);
+				response.notFound(routingContext);
 				return;
 			}
 			Movie movie = new Movie(results.result());
-			succesful(routingContext, movie);
+			response.succesful(routingContext, movie);
 
 		});
 
@@ -68,7 +69,7 @@ public class MovieRepository extends DatabaseClient {
 		final JsonObject json = routingContext.getBodyAsJson();
 
 		if (id == null || json == null) {
-			badRequest(routingContext);
+			response.badRequest(routingContext);
 			return;
 		}
 
@@ -76,10 +77,10 @@ public class MovieRepository extends DatabaseClient {
 
 		mongo.updateCollection(COLLECTION, findById(id), new JsonObject().put("$set", json), results -> {
 			if (results.failed()) {
-				notFound(routingContext);
+				response.notFound(routingContext);
 				return;
 			}
-			succesful(routingContext, movie);
+			response.succesful(routingContext, movie);
 
 		});
 
@@ -88,7 +89,7 @@ public class MovieRepository extends DatabaseClient {
 	public void deleteOne(RoutingContext routingContext) {
 		final String id = getId(routingContext);
 		if (id == null) {
-			badRequest(routingContext);
+			response.badRequest(routingContext);
 			return;
 		}
 		mongo.removeDocument(COLLECTION, findById(id),
@@ -98,8 +99,15 @@ public class MovieRepository extends DatabaseClient {
 	public void getAll(RoutingContext routingContext) {
 		mongo.find(COLLECTION, new JsonObject(), results -> {
 			List<Movie> movies = results.result().stream().map(Movie::new).collect(Collectors.toList());
-			succesful(routingContext, movies);
+			response.succesful(routingContext, movies);
 		});
 	}
 
+	private JsonObject findById(String id) {
+		return new JsonObject().put("_id", id);
+	}
+
+	protected String getId(RoutingContext routingContext) {
+		return routingContext.request().getParam("id");
+	}
 }
