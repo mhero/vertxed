@@ -64,8 +64,7 @@ public class Routes {
 				JsonObject configFile = json.result();
 
 				if (validateAuth(configFile, routingContext.getBodyAsJson())) {
-					routingContext.response()
-							.end(authProvider.generateToken(new JsonObject().put("sub", configFile.getString(USER))));
+					routingContext.response().end(authProvider.generateToken(tokenGenerator(configFile)));
 				} else {
 					routingContext.fail(HttpStatus.SC_UNAUTHORIZED);
 				}
@@ -73,6 +72,10 @@ public class Routes {
 
 		});
 
+	}
+
+	private JsonObject tokenGenerator(JsonObject configFile) {
+		return new JsonObject().put("sub", configFile.getString(USER));
 	}
 
 	private boolean validateAuth(JsonObject configFile, JsonObject requestBody) {
