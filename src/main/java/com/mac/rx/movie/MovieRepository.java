@@ -35,7 +35,7 @@ public class MovieRepository {
 	}
 
 	public void addOne(RoutingContext routingContext) {
-		final Movie movie = Json.decodeValue(routingContext.getBodyAsString(), Movie.class);
+		final Movie movie = Json.decodeValue(routingContext.body().asString(), Movie.class);
 
 		mongo.insert(COLLECTION, movie.toJson(), results -> {
 			if (results.succeeded()) {
@@ -66,7 +66,7 @@ public class MovieRepository {
 
 	public void updateOne(RoutingContext routingContext) {
 		final String id = getId(routingContext);
-		final JsonObject json = routingContext.getBodyAsJson();
+		final JsonObject json = routingContext.body().asJsonObject();
 
 		if (id == null || json == null) {
 			response.badRequest(routingContext);

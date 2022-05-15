@@ -20,8 +20,8 @@ public class Routes {
 	private static final String MOVIES_ENDPOINT = "/protected/api/movies";
 	private static final String MOVIES_ENDPOINT_WITH_ID = "/protected/api/movies/:id";
 	private final ConfigRetriever configRetriever;
-	private static final String USER = "username";
-	private static final String PASSWORD = "password";
+	private static final String USER = "user_name";
+	private static final String USER_PASSWORD = "user_password";
 	private Router router;
 	private JWTAuth authProvider;
 
@@ -63,7 +63,7 @@ public class Routes {
 			this.configRetriever.getConfig(json -> {
 				JsonObject configFile = json.result();
 
-				if (validateAuth(configFile, routingContext.getBodyAsJson())) {
+				if (validateAuth(configFile, routingContext.body().asJsonObject())) {
 					routingContext.response().end(authProvider.generateToken(tokenGenerator(configFile)));
 				} else {
 					routingContext.fail(HttpStatus.SC_UNAUTHORIZED);
@@ -80,7 +80,7 @@ public class Routes {
 
 	private boolean validateAuth(JsonObject configFile, JsonObject requestBody) {
 		return configFile.getString(USER).equals(requestBody.getString(USER))
-				&& configFile.getString(PASSWORD).equals(requestBody.getString(PASSWORD));
+				&& configFile.getString(USER_PASSWORD).equals(requestBody.getString(USER_PASSWORD));
 	}
 
 }

@@ -40,7 +40,7 @@ public class RestVerticle extends AbstractVerticle {
 	private void startWebApp(Handler<AsyncResult<HttpServer>> next) {
 
 		Router router = Router.router(vertx);
-		JWTAuth authProvider = new JwtProvider().createJwtProvider(vertx);
+		JWTAuth authProvider = new JwtProvider(vertx, configRetriever).createJwtProvider();
 
 		Routes routes = new Routes(router, authProvider, configRetriever);
 		vertx.createHttpServer().requestHandler(routes.createRoutes(movieRepository))
