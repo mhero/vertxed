@@ -21,7 +21,7 @@ docker-compose up
 Example requests
 
 ```
-token=$(curl --request POST --data '{"username":"marco","password":"secret"}' http://localhost:8080/login)
+token=$(curl --request POST --data '{"user_name":"marco","user_password":"secret"}' http://localhost:8080/login)
 curl --request GET  -H "Authorization: Bearer $token" http://localhost:8080/protected/api/movies
 curl --request GET  -H "Authorization: Bearer $token" http://localhost:8080/protected/api/movies/626b0ab4bcee077d94958c59
 curl --request POST -H "Authorization: Bearer $token"  --data '{"name":"xyz","rate":"7.1"}' http://localhost:8080/protected/api/movies
