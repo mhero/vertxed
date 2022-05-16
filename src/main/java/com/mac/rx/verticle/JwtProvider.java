@@ -19,8 +19,12 @@ public class JwtProvider {
 
 	// Read more at https://vertx.io/docs/vertx-web/java/#_jwt_authorisation
 	public JWTAuth createJwtProvider() {
-		JWTAuthOptions authConfig = new JWTAuthOptions()
-				.setKeyStore(new KeyStoreOptions().setType("jceks").setPath("keystore.jceks").setPassword("secret"));
+		JWTAuthOptions authConfig = new JWTAuthOptions().setKeyStore(getKeyStoreOptions());
 		return JWTAuth.create(vertx, authConfig);
 	}
+
+	public KeyStoreOptions getKeyStoreOptions() {
+		return new KeyStoreOptions().setType("jceks").setPath("keystore.jceks").setPassword("secret");
+	}
+
 }
