@@ -5,10 +5,6 @@
  */
 package com.mac.rx.movie;
 
-import io.vertx.core.AsyncResult;
-import io.vertx.core.Future;
-import io.vertx.core.Handler;
-import io.vertx.core.Promise;
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.mongo.MongoClient;
@@ -26,8 +22,8 @@ import org.apache.http.HttpStatus;
 public class MovieRepository {
 
 	public static final String COLLECTION = "movies";
-	private MongoClient mongo;
-	private Response response;
+	private final MongoClient mongo;
+	private final Response response;
 
 	public MovieRepository(MongoClient mongo) {
 		this.mongo = mongo;

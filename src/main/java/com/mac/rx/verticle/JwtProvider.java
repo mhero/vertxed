@@ -9,8 +9,8 @@ import io.vertx.ext.auth.jwt.JWTAuthOptions;
 
 public class JwtProvider {
 
-	private Vertx vertx;
-	private ConfigRetriever configRetriever;
+	private final Vertx vertx;
+	private final ConfigRetriever configRetriever;
 	private KeyStoreOptions keyStoreOptions;
 
 	private static final String KEYSTORE_TYPE = "keystore_type";

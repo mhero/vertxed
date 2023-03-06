@@ -3,8 +3,8 @@ package com.mac.rx.config;
 import io.vertx.core.json.JsonObject;
 
 public class MongoConfig {
-	private String connectionString;
-	private String mongoDb;
+	private final String connectionString;
+	private final String mongoDb;
 
 	public MongoConfig(String connectionString, String mongoDb) {
 		this.connectionString = connectionString;

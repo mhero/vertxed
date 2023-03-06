@@ -26,13 +26,13 @@ public class MovieFixture {
 								if (ar2.failed()) {
 									fut.fail("Failed trying yo create element");
 								} else {
-									next.handle(Future.<Void>succeededFuture());
+									next.handle(Future.succeededFuture());
 								}
 							});
 						}
 					});
 				} else {
-					next.handle(Future.<Void>succeededFuture());
+					next.handle(Future.succeededFuture());
 				}
 			} else {
 				// report the error

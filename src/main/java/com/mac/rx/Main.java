@@ -25,7 +25,7 @@ public class Main {
 	public static void main(String[] args) {
 		Vertx vertx = Vertx.vertx();
 
-		Integer vertxPort = 8080;
+		int vertxPort = 8080;
 		String connectionString = "mongodb://localhost:27017";
 		String mongoDb = "vertxd";
 

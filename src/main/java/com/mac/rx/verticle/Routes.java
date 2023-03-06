@@ -22,8 +22,8 @@ public class Routes {
 	private final ConfigRetriever configRetriever;
 	private static final String USER = "user_name";
 	private static final String USER_PASSWORD = "user_password";
-	private Router router;
-	private JWTAuth authProvider;
+	private final Router router;
+	private final JWTAuth authProvider;
 
 	public Routes(Router router, JWTAuth authProvider, ConfigRetriever configRetriever) {
 		this.configRetriever = configRetriever;
