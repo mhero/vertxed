@@ -56,7 +56,7 @@ public class RestVerticle extends AbstractVerticle {
 	}
 
 	@Override
-	public void stop() throws Exception {
+	public void stop() {
 		mongo.close();
 	}
 
