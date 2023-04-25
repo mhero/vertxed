@@ -92,7 +92,7 @@
 		<io.vertx>4.4.1</io.vertx>
 		<httpcore>4.4.16</httpcore>
 		<hsqldb>2.7.1</hsqldb>
-		<netty>4.1.91.Final</netty>
+		<netty>4.1.92.Final</netty>
 		<jackson.core>2.15.0</jackson.core>
 		<jackson-databind>2.15.0</jackson-databind>
 	</properties>
