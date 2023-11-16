@@ -89,7 +89,7 @@
 	</dependencies>
 
 	<properties>
-		<io.vertx>4.4.5</io.vertx>
+		<io.vertx>4.5.0</io.vertx>
 		<httpcore>4.4.16</httpcore>
 		<hsqldb>2.7.2</hsqldb>
 		<netty>4.1.99.Final</netty>
