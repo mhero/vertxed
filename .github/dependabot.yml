@@ -1,21 +1,21 @@
 version: 2
 updates:
-- package-ecosystem: maven
-  directory: "/"
-  schedule:
-    interval: daily
-    time: "10:00"
-  open-pull-requests-limit: 10
-  ignore:
-  - dependency-name: io.netty:netty-transport
-    versions:
-    - 4.1.61.Final
-    - 4.1.62.Final
-  - dependency-name: io.netty:netty-common
-    versions:
-    - 4.1.61.Final
-    - 4.1.62.Final
-  - dependency-name: io.netty:netty-buffer
-    versions:
-    - 4.1.61.Final
-    - 4.1.62.Final
+  - package-ecosystem: maven
+    directory: "/"
+    schedule:
+      interval: daily
+      time: "10:00"
+    open-pull-requests-limit: 10
+    ignore:
+      - dependency-name: io.netty:netty-transport
+        versions:
+          - 4.1.61.Final
+          - 4.1.62.Final
+      - dependency-name: io.netty:netty-common
+        versions:
+          - 4.1.61.Final
+          - 4.1.62.Final
+      - dependency-name: io.netty:netty-buffer
+        versions:
+          - 4.1.61.Final
+          - 4.1.62.Final

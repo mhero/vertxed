@@ -1,8 +1,6 @@
-
 # vertxed
 
 small REST api using [vertx](https://vertx.io) tool-​kit
-
 
 Endpoints
 

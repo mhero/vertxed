@@ -1,10 +1,10 @@
 {
-	"connectionString": "mongodb://localhost:27017",
-	"vertxPort": 8080,
-	"mongoDb": "vertxd",
-	"user_name": "marco",
-	"user_password": "secret",
-	"keystore_type": "jceks",
-	"keystore_path": "keystore.jceks",
-	"keystore_password": "secret"
+  "connectionString": "mongodb://localhost:27017",
+  "vertxPort": 8080,
+  "mongoDb": "vertxd",
+  "user_name": "marco",
+  "user_password": "secret",
+  "keystore_type": "jceks",
+  "keystore_path": "keystore.jceks",
+  "keystore_password": "secret"
 }

@@ -22,7 +22,7 @@ _run:
 jobs:
   build:
     docker:
-      - image: maven:3.8.5-eclipse-temurin-16
+      - image: maven:3.9.9-eclipse-temurin-22-alpine
     environment:
       # Customize the JVM maximum heap limit
       MAVEN_OPTS: -Xmx3200m
