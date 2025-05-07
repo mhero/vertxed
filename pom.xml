@@ -93,7 +93,7 @@
         <httpcore>4.4.16</httpcore>
         <hsqldb>2.7.4</hsqldb>
         <jackson.core>2.19.0</jackson.core>
-        <netty>4.2.0.Final</netty>
+        <netty>4.2.1.Final</netty>
         <jackson-databind>2.19.0</jackson-databind>
     </properties>
 
