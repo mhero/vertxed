@@ -1,25 +1,41 @@
 package com.mac.rx.movie;
 
+import org.apache.http.HttpStatus;
+
+import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.json.Json;
 import io.vertx.ext.web.RoutingContext;
-import org.apache.http.HttpStatus;
+
 
 public class Response {
 
-    protected static final String CONTENT_TYPE = "content-type";
-    protected static final String APPLICATION_JSON = "application/json; charset=utf-8";
+    private static final String APPLICATION_JSON = "application/json; charset=utf-8";
 
-    protected void badRequest(RoutingContext routingContext) {
-        routingContext.response().setStatusCode(HttpStatus.SC_BAD_REQUEST).end();
+    public void badRequest(RoutingContext routingContext, String message) {
+        routingContext.response()
+            .setStatusCode(HttpStatus.SC_BAD_REQUEST)
+            .putHeader(HttpHeaders.CONTENT_TYPE, "text/plain; charset=utf-8")
+            .end(message != null ? message : "Bad Request");
     }
 
-    protected void notFound(RoutingContext routingContext) {
-        routingContext.response().setStatusCode(HttpStatus.SC_NOT_FOUND).end();
+    public void notFound(RoutingContext routingContext, String message) {
+        routingContext.response()
+            .setStatusCode(HttpStatus.SC_NOT_FOUND)
+            .putHeader(HttpHeaders.CONTENT_TYPE, "text/plain; charset=utf-8")
+            .end(message != null ? message : "Not Found");
     }
 
-    protected void succesful(RoutingContext routingContext, Object oject) {
-        routingContext.response().setStatusCode(HttpStatus.SC_OK).putHeader(CONTENT_TYPE, APPLICATION_JSON)
-                .end(Json.encodePrettily(oject));
+    public void succesful(RoutingContext routingContext, Object object) {
+        routingContext.response()
+            .setStatusCode(HttpStatus.SC_OK)
+            .putHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON)
+            .end(Json.encodePrettily(object));
     }
 
+    public void failed(RoutingContext routingContext, int statusCode, String message) {
+        routingContext.response()
+            .setStatusCode(statusCode)
+            .putHeader(HttpHeaders.CONTENT_TYPE, "text/plain; charset=utf-8")
+            .end(message != null ? message : "An error occurred");
+    }
 }
