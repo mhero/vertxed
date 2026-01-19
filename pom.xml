@@ -94,7 +94,7 @@
         <hsqldb>2.7.4</hsqldb>
         <jackson.core>2.20.1</jackson.core>
         <netty>4.2.9.Final</netty>
-        <jackson-databind>2.20.1</jackson-databind>
+        <jackson-databind>2.21.0</jackson-databind>
     </properties>
 
 
