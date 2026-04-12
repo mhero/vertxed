@@ -1,10 +1,9 @@
 package com.mac.rx.movie;
 
-import org.apache.http.HttpStatus;
-
 import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.json.Json;
 import io.vertx.ext.web.RoutingContext;
+import org.apache.http.HttpStatus;
 
 
 public class Response {
@@ -13,29 +12,29 @@ public class Response {
 
     public void badRequest(RoutingContext routingContext, String message) {
         routingContext.response()
-            .setStatusCode(HttpStatus.SC_BAD_REQUEST)
-            .putHeader(HttpHeaders.CONTENT_TYPE, "text/plain; charset=utf-8")
-            .end(message != null ? message : "Bad Request");
+                .setStatusCode(HttpStatus.SC_BAD_REQUEST)
+                .putHeader(HttpHeaders.CONTENT_TYPE, "text/plain; charset=utf-8")
+                .end(message != null ? message : "Bad Request");
     }
 
     public void notFound(RoutingContext routingContext, String message) {
         routingContext.response()
-            .setStatusCode(HttpStatus.SC_NOT_FOUND)
-            .putHeader(HttpHeaders.CONTENT_TYPE, "text/plain; charset=utf-8")
-            .end(message != null ? message : "Not Found");
+                .setStatusCode(HttpStatus.SC_NOT_FOUND)
+                .putHeader(HttpHeaders.CONTENT_TYPE, "text/plain; charset=utf-8")
+                .end(message != null ? message : "Not Found");
     }
 
     public void successful(RoutingContext routingContext, Object object) {
         routingContext.response()
-            .setStatusCode(HttpStatus.SC_OK)
-            .putHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON)
-            .end(Json.encodePrettily(object));
+                .setStatusCode(HttpStatus.SC_OK)
+                .putHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON)
+                .end(Json.encodePrettily(object));
     }
 
     public void failed(RoutingContext routingContext, int statusCode, String message) {
         routingContext.response()
-            .setStatusCode(statusCode)
-            .putHeader(HttpHeaders.CONTENT_TYPE, "text/plain; charset=utf-8")
-            .end(message != null ? message : "An error occurred");
+                .setStatusCode(statusCode)
+                .putHeader(HttpHeaders.CONTENT_TYPE, "text/plain; charset=utf-8")
+                .end(message != null ? message : "An error occurred");
     }
 }

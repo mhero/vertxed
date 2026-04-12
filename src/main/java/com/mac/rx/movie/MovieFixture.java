@@ -11,17 +11,17 @@ import static com.mac.rx.movie.MovieRepository.COLLECTION;
 
 public class MovieFixture {
 
-	public static void createMovie(MongoClient mongo, Handler<AsyncResult<Void>> next, Promise<Void> fut) {
-		Movie shawshank = new Movie("The Shawshank Redemption", "9.3");
-		Movie godfather = new Movie("The Godfather", "9.2");
+    public static void createMovie(MongoClient mongo, Handler<AsyncResult<Void>> next, Promise<Void> fut) {
+        Movie shawshank = new Movie("The Shawshank Redemption", "9.3");
+        Movie godfather = new Movie("The Godfather", "9.2");
 
-		mongo.count(COLLECTION, new JsonObject()).compose(count -> {
-			if (count == 0) {
-				return mongo.insert(COLLECTION, shawshank.toJson())
-						.compose(_ -> mongo.insert(COLLECTION, godfather.toJson())).mapEmpty(); // Returns Future<Void>
-			} else {
-				return Future.succeededFuture();
-			}
-		}).onSuccess(_ -> next.handle(Future.succeededFuture())).onFailure(err -> fut.fail(err));
-	}
+        mongo.count(COLLECTION, new JsonObject()).compose(count -> {
+            if (count == 0) {
+                return mongo.insert(COLLECTION, shawshank.toJson())
+                        .compose(_ -> mongo.insert(COLLECTION, godfather.toJson())).mapEmpty(); // Returns Future<Void>
+            } else {
+                return Future.succeededFuture();
+            }
+        }).onSuccess(_ -> next.handle(Future.succeededFuture())).onFailure(err -> fut.fail(err));
+    }
 }

@@ -11,23 +11,24 @@ public class Main {
 
     public static void main(String[] args) {
         Vertx vertx = Vertx.vertx();
-
         ConfigRetriever configRetriever = new AppConfig().getConfigFile(vertx);
 
-        configRetriever.getConfig().onSuccess(config -> {
-            int port = config.getInteger("vertxPort");
-            String connectionString = config.getString("connectionString");
-            String mongoDb = config.getString("mongoDb");
+        configRetriever.getConfig()
+                .onFailure(err -> {
+                    System.err.println("Failed to load config: " + err.getMessage());
+                    System.exit(1);
+                })
+                .onSuccess(config -> {
+                    JsonObject mongoConfig = new MongoConfig(
+                            config.getString("connectionString"),
+                            config.getString("mongoDb")
+                    ).config();
 
-            JsonObject mongoConfig = new MongoConfig(connectionString, mongoDb).config();
-            vertx.deployVerticle(new RestVerticle(port, mongoConfig, configRetriever))
-                    .onFailure(err -> {
-                        System.err.println("Failed to deploy verticle: " + err.getMessage());
-                        System.exit(1);
-                    });
-        }).onFailure(err -> {
-            System.err.println("Failed to load config: " + err.getMessage());
-            System.exit(1);
-        });
+                    vertx.deployVerticle(new RestVerticle(config.getInteger("vertxPort"), mongoConfig, configRetriever))
+                            .onFailure(err -> {
+                                System.err.println("Failed to deploy verticle: " + err.getMessage());
+                                System.exit(1);
+                            });
+                });
     }
 }

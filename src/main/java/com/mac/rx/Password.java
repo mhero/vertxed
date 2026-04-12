@@ -1,9 +1,10 @@
 package com.mac.rx;
 
+import io.vertx.core.json.JsonObject;
 import org.mindrot.jbcrypt.BCrypt;
+
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import io.vertx.core.json.JsonObject;
 
 public class Password {
 
