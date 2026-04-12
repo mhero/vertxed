@@ -25,9 +25,9 @@ public class RestVerticle extends AbstractVerticle {
 
     @Override
     public void start(Promise<Void> promise) {
-
         mongo = MongoClient.createShared(vertx, mongoConfig);
         movieRepository = new MovieRepository(mongo);
+        System.out.println("MongoDB client initialized.");
 
         MovieFixture.createMovie(mongo, _ -> startWebApp(http -> completeStartup(http, promise)), promise);
     }
@@ -56,6 +56,7 @@ public class RestVerticle extends AbstractVerticle {
     @Override
     public void stop() {
         mongo.close();
+        System.out.println("Verticle stopped, MongoDB connection closed.");
     }
 
 }

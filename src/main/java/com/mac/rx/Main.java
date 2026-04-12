@@ -19,6 +19,7 @@ public class Main {
                     System.exit(1);
                 })
                 .onSuccess(config -> {
+                    System.out.println("Config loaded successfully.");
                     JsonObject mongoConfig = new MongoConfig(
                             config.getString("connectionString"),
                             config.getString("mongoDb")
