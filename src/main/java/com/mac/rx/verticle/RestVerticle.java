@@ -49,8 +49,10 @@ public class RestVerticle extends AbstractVerticle {
 
 	private void completeStartup(AsyncResult<HttpServer> http, Promise<Void> fut) {
 		if (http.succeeded()) {
+			System.out.println("HTTP server started on port " + http.result().actualPort());
 			fut.complete();
 		} else {
+			System.err.println("HTTP server failed: " + http.cause().getMessage());
 			fut.fail(http.cause());
 		}
 	}
