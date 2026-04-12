@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 
 _run:
   jceinstall: &jceinstall
@@ -20,20 +20,26 @@ _run:
       - v1-dependencies-
 
 jobs:
-  build:
+  build-and-test:
     docker:
       - image: maven:3.9.9-eclipse-temurin-22-alpine
     environment:
-      # Customize the JVM maximum heap limit
       MAVEN_OPTS: -Xmx3200m
-      _JAVA_OPTIONS: "-Xmx3g"
     steps:
       - checkout
-      - restore_cache: *restorecache
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "pom.xml" }}
+            - v1-dependencies-
       - run:
-          name: Install dependencies
-          command: mvn dependency:go-offline install
+          name: Run tests
+          command: mvn test
       - save_cache:
           paths:
             - ~/.m2
           key: v1-dependencies-{{ checksum "pom.xml" }}
+
+workflows:
+  build-and-test:
+    jobs:
+      - build-and-test
