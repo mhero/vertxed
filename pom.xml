@@ -129,7 +129,7 @@
     </dependencies>
 
     <properties>
-        <io.vertx>5.1.4</io.vertx>
+        <io.vertx>5.1.5</io.vertx>
         <httpcore>4.4.16</httpcore>
         <hsqldb>2.7.4</hsqldb>
         <jackson.core>2.22.1</jackson.core>
